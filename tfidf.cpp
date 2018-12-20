@@ -139,7 +139,7 @@ public:
 	void loadData()
 	{
 		cout << "Loading data..." << endl;
-		ifstream in("track_lyrics.csv");
+		ifstream in("patentList.csv");
 		string tmp;
 		std::vector<std::string> vec_str;
 		int cnt = 0;
@@ -271,7 +271,7 @@ public:
 				{
 					std::vector<std::string> recSong2(recSong.begin(), recSong.begin() + recAmount);
 					std::ofstream outfile;
-					outfile.open("simi_songs_lyrics", std::ios_base::app);
+					outfile.open("similar_patents.txt", std::ios_base::app);
 					outfile << tracks[i] << "," << boost::join(recSong2, ",") << endl;
 					outfile.close();
 					recSong2.clear();
@@ -290,11 +290,11 @@ public:
 
 int main()
 {
-	tfidf lyric;
-	lyric.loadStopWords();
-	lyric.loadData();
-	lyric.recAmount = 4;
-	lyric.getMat();
-	lyric.saveMat("tfidf_matrix.txt");
-	lyric.calSimi(0, 15);
+	tfidf patent;
+	patent.loadStopWords();
+	patent.loadData();
+	patent.recAmount = 4;
+	patent.getMat();
+	patent.saveMat("tfidf_matrix.txt");
+	patent.calSimi(0, 15);
 }
