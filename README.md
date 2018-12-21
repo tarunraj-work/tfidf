@@ -1,0 +1,6 @@
+# tfidf
+Text Frequency - Inverse Document Frequency for C++
+
+  The world is growing, and with it grows the volume of data available to mathematicians. To sort through those and find important issues will require key concepts from data mining and natural language processing. Using C++, we will implement a version of ”Text Frequency - Inverse Document Frequency” (TF-IDF) to search through a document and its corresponding corpus to determine correlation values between documents and cluster them into similar groups.
+
+  To create a test library, we manually copied and pasted the abstracts from 15 patents as individual entries in a Comma Separated Values file. This test case proved far too small to create hugely compelling results, but did work somewhat reasonably for small scale results. An additional side project would be to create a data scraper that would automate the process of converting patents into entries in a CSV file. This would save a huge amount of time, and could include the next step in it as well as a form of preprocessing. A stop list of words with little meaning in English was also included as a text file. This is a similar list to the ones used by search engines to avoid searching for unnecessary words. We chose to store our word weights in a matrix for easy access later, and our similar patents as a text file.
