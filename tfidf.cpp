@@ -16,7 +16,7 @@ using namespace std;
 
 class tfidf {
 private:
-	std::vector<std::string> tracks; // all songs in order
+	std::vector<std::string> patentsList; // all patents in order
 	std::vector<std::vector<double>> dataMat; // converted bag of words matrix
 	unsigned int nrow; // matrix row number
 	unsigned int ncol; // matrix column number
@@ -152,7 +152,7 @@ public:
 			boost::split(vec_str, tmp, boost::is_any_of(","));
 			std::vector<std::string> wordList = textParse(vec_str[1]);
 			rawDataSet.push_back(wordList);
-			tracks.push_back(vec_str[0]);
+			patentsList.push_back(vec_str[0]);
 			tmp.clear();
 			vec_str.clear();
 		}
@@ -243,7 +243,7 @@ public:
 		cout << "Calculating..." << endl;
 		double similarity;
 		std::map<double, std::vector<std::string>> similarPatent;
-		std::vector<std::string> recSong;
+		std::vector<std::string> patent;
 		for (std::size_t i = limit1; i != limit2; ++i) // for each patent
 		{
 			finishCount++;
@@ -252,7 +252,7 @@ public:
 				if (j != i) // exclude patent itself
 				{
 					similarity = cosine_similarity(weightMat[i], weightMat[j]);
-					similarPatent[similarity].push_back(tracks[j]);
+					similarPatent[similarity].push_back(patentsList[j]);
 				}
 			}
 
@@ -260,28 +260,28 @@ public:
 			{
 				for (auto it2 = similarPatent.rbegin(); it2 != similarPatent.rend(); ++it2)
 				{
-					if (recSong.size() >= recAmount)
+					if (patent.size() >= recAmount)
 						break;
 					std::vector<std::string> temp(it2->second);
 					orderByHot(&temp);
 					for (std::string e : temp)
-						recSong.push_back(e);
+						patent.push_back(e);
 				}
-				if (recSong.size() >= recAmount)
+				if (patent.size() >= recAmount)
 				{
-					std::vector<std::string> recSong2(recSong.begin(), recSong.begin() + recAmount);
+					std::vector<std::string> patent2(patent.begin(), patent.begin() + recAmount);
 					std::ofstream outfile;
 					outfile.open("similar_patents.txt", std::ios_base::app);
-					outfile << tracks[i] << "," << boost::join(recSong2, ",") << endl;
+					outfile << patentsList[i] << "," << boost::join(patent2, ",") << endl;
 					outfile.close();
-					recSong2.clear();
+					patent2.clear();
 				}
 				else
 				{
 					cout << "Unexpected small size recommendation list." << endl;
 				}
 			}
-			recSong.clear();
+			patent.clear();
 			similarPatent.clear();
 		}
 		cout << endl;
@@ -290,11 +290,11 @@ public:
 
 int main()
 {
-	tfidf patent;
-	patent.loadStopWords();
-	patent.loadData();
-	patent.recAmount = 4;
-	patent.getMat();
-	patent.saveMat("tfidf_matrix.txt");
-	patent.calSimi(0, 15);
+	tfidf patents;
+	patents.loadStopWords();
+	patents.loadData();
+	patents.recAmount = 4;
+	patents.getMat();
+	patents.saveMat("tfidf_matrix.txt");
+	patents.calSimi(0, 15);
 }
